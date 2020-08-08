@@ -8,7 +8,7 @@ def index(request):
     paginator = Paginator(listings, 6)
     page = request.GET('page')
     paged_listings = paginator.get_page(page)
-    
+
     context = {
         "listings": paged_listings
     }
