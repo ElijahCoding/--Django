@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.core.mail import send_mail
 from .models import Contact
+from django.http import HttpResponse
+from .tasks import sleepy, send_email_task
 
 def contact(request):
     if request.method == 'POST':
@@ -35,3 +37,7 @@ def contact(request):
 
         messages.success(request, 'Your request has been submitted, a realtor will get back to you soon')
         return redirect('/listings/' + listing_id)
+
+def celeryEmail(request):
+    send_email_task.delay()
+    return HttpResponse('done')
